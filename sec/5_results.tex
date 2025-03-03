@@ -1,0 +1,74 @@
+\section{Results and Discussion}
+
+\begin{table*}[htbp]
+\centering
+\begin{tabular}{llllllll}
+\hline
+\multirow{2}{*}{\bf Method} & \multicolumn{3}{c}{\bf CIFAR-10}           & \multicolumn{3}{c}{\bf SVHN}          & \multirow{2}{*}{ Average} \\ \cmidrule(lr){2-4}\cmidrule(lr){5-7}
+                        & \bf 250 labels & \bf 1000 labels & \bf 4000 labels & \bf 250 labels & \bf 1000 labels & \bf 4000 labels & \\ \hline
+ResNet18  & 33.90  & 43.71  & 58.47 & 41.20 & 84.58  & 87.60 & 58.24 \\
+MoCO & 34.50 & 46.75  & 61.88 & 30.75  & 83.25 & 89.12 & 57.37 \\
+SimSiam & 23.88 & 29.50 & 48.88 & 14.62 & 51.25 & 67.38 & 39.92 \\
+Barlow Twins &  35.88 & 47.75  & 63.75 & 21.88 & 79.01 & 88.25 & 56.42 \\
+BYOL  & 33.19 & 46.92 & 59.29 & 67.00  & 85.60 & 88.20 & 63.70 \\ 
+RLPL (ours)  & \bf  48.93  & \bf 52.45  &  \bf 65.69 & \bf 72.12 & \bf   88.39 & \bf 92.78 & \bf 70.39 \\ \hline
+\end{tabular}
+\captionof{table}{Test accuracy (\%) of different methods on varying numbers of training samples.}
+\label{table:2}
+\end{table*}
+
+
+\begin{table*}[!htbp]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lllllllll}
+\hline
+\multirow{2}{*}{\bf Method} & \multirow{2}{*}{\bf STL-10} & \multicolumn{3}{c}{\bf CIFAR-10}           & \multicolumn{3}{c}{\bf SVHN} & \multirow{2}{*}{Average} \\ \cmidrule(lr){3-5}\cmidrule(lr){6-8}
+                 &       & \bf 250 labels & \bf 1000 labels & \bf 4000 labels & \bf 250 labels & \bf 1000 labels & \bf 4000 labels & \\ \hline
+PL (random init.)      &     53.34         &    30.49        &     40.57        &   55.90         &        11.19    &      17.62       &    75.62       &   40.39 \\
+RLPL w/o PL      &      83.20        &    34.54       &     48.48        &   59.60          &     71.25      &       85.54      &     89.00      &   67.66 \\
+RLPL (ours)    &    \bf 84.64       & \bf  48.93        &   \bf     52.45     &  \bf     65.69      & \bf    72.12       &    \bf   88.39     &  \bf   92.78  & \bf 72.14 \\ \hline
+\end{tabular}
+}
+\captionof{table}{Test accuracy (\%) for ablation on methods.}
+\label{table:ablation}
+\end{table*}
+
+
+Our evaluation methods primarily comprise the baseline model, BYOL, SimSiam, MoCo, Barlaw Twins, RLPL, and two additional semi-supervised algorithms, FixMatch \cite{sohn2020fixmatch}, and MixMatch \cite{berthelot2019mixmatch} on the considered datasets. In all our experiments, we re-implemented each algorithm on a ResNet18 backbone with identical hyperparameters to ensure a fair comparison.
+
+\subsection{Effect of Batch Size}
+
+To illustrate the effectiveness of RLPL with reduced batch sizes, we present the results in Figure \ref{fig:batch}. We started with a batch size of $8$ for RLPL. Subsequently, we gradually increased the batch sizes for RLPL and others to evaluate their performances. To have a fair comparison, we applied the classification tasks only on the learned representation of RL, without any use of PL. As anticipated, the accuracy diminished with smaller batch sizes. Remarkably, at a batch size of $64$, RLPL attained an accuracy of $82.24\%$, surpassing BYOL's accuracy of $81.94\%$ with a batch size of $128$. All other methods, including Barlow Twins, MoCo, and SimSiam, achieve significantly lower accuracy in the small-scale implementation, with their performance further declining as batch size decreases. Although all methods exhibited a decline in accuracy with further reductions in batch sizes, RLPL consistently outperformed BYOL and all the others.
+
+\subsection{Classification Accuracy}
+
+Table \ref{table:stl} reports the classification accuracy on the STL-10 dataset. The ResNet18 classifier demonstrates challenges in reaching acceptable accuracy levels. For a fair comparison, all methods, including FixMatch and MixMatch, were implemented with a ResNet18 backbone and an identical batch size.
+
+The results reveal that FixMatch struggles to achieve competitive accuracy, likely due to the limitations of pseudo-labeling techniques, which often require robust initialization and a deep backbone to perform effectively. While MixMatch shows considerable improvement, it still falls short of the performance attained by BYOL and RLPL. MoCo, SimSiam, and Barlow Twins achieve almost similar but lower accuracy. Notably, BYOL achieves an accuracy of $81.94\%$, whereas RLPL surpasses this with an accuracy of $84.64\%$, obtaining a $\textbf{2.7\%}$ improvement over BYOL.
+
+Table \ref{table:2} compares ResNet18, the four primary methods central to this study, and RLPL across varying training samples. For both datasets, all methods showed progressively higher accuracies with increasing sample sizes. We observe that our method uniquely achieves acceptable accuracy on CIFAR-10 with only 250 labels, whereas other methods struggle under the same conditions. For SVHN with 250 labels, only BYOL and RLPL reach satisfactory accuracy, while other methods perform notably worse. Notably, Notably, RLPL consistently achieved the highest accuracy across all datasets and under all varying configurations, outperforming other methods in each case.
+
+We include a column displaying the average test accuracy across all setups to provide a comprehensive view of the relative performance of each method. Only BYOL comes close to RLPL's performance; however, it still lags by a margin of \textbf{6.69\%}. Nevertheless, RLPL consistently outperformed BYOL across all scenarios, particularly with smaller sample sizes, with improvement margins ranging from $\textbf{2.79\%}$ to $\textbf{15.74\%}$.
+
+\subsection{Transfer to Other Classification Tasks}
+
+\begin{table*}[htbp]
+  \centering
+  \begin{tabular}{lccccccc}
+  \hline
+  \textbf{Method} & \textbf{CIFAR100} & \textbf{FashionMNIST} & \textbf{LFW} & \textbf{EuroSAT} & \textbf{OxfordFlowers102} & \textbf{Imagenette} & Average \\ \hline
+  ResNet18 & 58.09 & 94.55 & 85.03 & 93.62 & 38.48 & 80.66 & 75.07 \\
+  MoCo & 62.50 & 90.54 & \bf 93.21 & 95.00 & 35.00 & 79.88 & 76.69 \\
+  SimSiam & 33.88 & 92.63 & 80.41 & 79.38 & 26.12 & 76.82 & 64.54 \\
+  Barlow Twins & 58.75 & 94.38 & 89.19 & 94.62 & 27.88 & 80.38 & 74.87 \\
+  BYOL & 63.61 & 93.62 & 80.73 & \bf 96.28 & 49.64 & 86.13 & 78.67 \\
+  RLPL w/o PL & \bf 68.08 & \bf 96.01 & 89.33 & 96.03 & \bf 51.67 & \bf 87.94 & \bf 81.51 \\ \hline
+  \end{tabular}
+  \caption{Performance comparison (\% test accuracy) of methods on various datasets.}
+  \label{table:transfer}
+\end{table*}
+
+To assess RLPL's generalization capabilities, we evaluated it on a range of classification tasks across diverse datasets, as summarized in Table \ref{table:transfer}. This table compares RLPL's performance with baseline and other methods after pretraining on the STL-10 dataset, followed by the downstream tasks. For a fair comparison, we applied the pretrained RLPL model directly, without using PLs in the classification tasks. This approach highlights RLPL's standalone performance; notably, integrating PL strategies could likely enhance accuracy beyond the presented results.
+
+RLPL achieves the highest accuracy in nearly all cases, except for MoCo on the Labeled Faces in the Wild (LFW) dataset and BYOL on the EuroSAT dataset. RLPL obtains an average accuracy of 81.51\%, substantially outperforming methods like SimSiam and Barlow Twins. Moreover, RLPL obtains $\textbf{2.84\%}$ more accuracy than the closest best method, BYOL, across all the transfer learning tasks. This improvement highlights RLPL's transferability on unseen classification tasks.
