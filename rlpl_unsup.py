@@ -67,7 +67,7 @@ if os.path.exists(args.save_path):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("device:", device)
 
-learner = BYWL(
+learner = RLPL(
     model.to(device),
     image_size = args.resize,
     method = args.method,
