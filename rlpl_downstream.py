@@ -15,7 +15,7 @@ def parse_args():
     parser.add_argument('--batch_size', type=int, default=10, help="Batch size for training and validation")
     parser.add_argument('--num_epochs', type=int, default=25, help="Number of training epochs")
     parser.add_argument('--lr', type=float, default=3e-4, help="Learning rate for the optimizer")
-    parser.add_argument('--model_checkpoint', type=str, default='./model/bywl_unsup.pt',
+    parser.add_argument('--model_checkpoint', type=str, default='./model/rlpl_unsup.pt',
                         help="Path to the pre-trained model checkpoint")
     parser.add_argument('--save_path', type=str, default='./model/downstream.pt',
                         help="Directory to save the trained model and optimizer state")

@@ -27,7 +27,7 @@ RLPL framework incorporates an auxiliary loss function with consistency loss and
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/rlpl.git
+git clone https://github.com/atik666/rlpl.git
 cd rlpl
 pip install -r requirements.txt
 ```
