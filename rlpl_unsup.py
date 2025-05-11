@@ -12,7 +12,7 @@ from torch import nn
 
 # Initialize the parser
 parser = argparse.ArgumentParser(
-    description="Representation Learning with BYWL."
+    description="Representation Learning with RLPL."
     )
 
 # Add the parameters
@@ -22,10 +22,10 @@ parser.add_argument('-p', '--path', type=str,
 parser.add_argument('-sz', '--resize', type=int, default=256, help='Image size')
 parser.add_argument('-b', '--batchsz', type=int, default=128, help='Batch size')
 parser.add_argument('-s', '--save', type=str, default='./model/', help='Path to save the models')
-parser.add_argument('-sp', '--save_path', type=str, default='./model/bywl_unsup.pt', help='file name')
+parser.add_argument('-sp', '--save_path', type=str, default='./model/rlpl_unsup.pt', help='file name')
 parser.add_argument('-e', '--epochs', type=int, default=50, help='Number of  epochs')
 parser.add_argument('-l', '--lr', type=float, default=3e-4, help='Learning rate')
-parser.add_argument('-m', '--method', type=str, default='BYWL', help='Methods to perform', choices=['BYWL', 'BYOL'])
+parser.add_argument('-m', '--method', type=str, default='RLPL', help='Methods to perform', choices=['RLPL', 'BYOL'])
 
 # Parse the arguments
 args = parser.parse_args()
@@ -114,7 +114,7 @@ for epoch in tqdm(range(num_epochs), desc="Epochs"):
         }
 
         # save your improved network
-        torch.save(state, args.save+'bywl_unsup_best_loss.pt')
+        torch.save(state, args.save+'rlpl_unsup_best_loss.pt')
         print("model saved! \n")
 
 state = {

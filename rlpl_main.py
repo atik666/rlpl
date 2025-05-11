@@ -167,12 +167,12 @@ class NetWrapper(nn.Module):
 
 # main class
 
-class BYWL(nn.Module):
+class RLPL(nn.Module):
     def __init__(
         self,
         net,
         image_size,
-        method = 'BYWL',
+        method = 'RLPL',
         n_aug = 1,
         lambda_weight = 0.5,
         hidden_layer = -2,
@@ -275,7 +275,7 @@ class BYWL(nn.Module):
         online_pred_one = self.online_predictor(online_proj_one)
         online_pred_two = self.online_predictor(online_proj_two)
 
-        if self.method == 'BYWL':
+        if self.method == 'RLPL':
             # Pass the original input through the online network
             x_n, _ = self.online_encoder(x)
             x_n = self.online_predictor(x_n) # Output from the prediction embedding for the original input
@@ -287,19 +287,19 @@ class BYWL(nn.Module):
             target_proj_one.detach_()
             target_proj_two.detach_()
 
-        if self.method == 'BYWL':
+        if self.method == 'RLPL':
             avr_embed = torch.mean(torch.stack([online_pred_one, online_pred_two], dim=0), dim=0) # Get the mean embedding
             loss_aug = loss_fn(x_n, avr_embed) # The addtional auxiliary loss
 
         loss_one = loss_fn(online_pred_one, target_proj_two.detach())
         loss_two = loss_fn(online_pred_two, target_proj_one.detach())
 
-        if self.method == 'BYWL':
+        if self.method == 'RLPL':
             loss = loss_one + loss_two + self.lambda_weight * loss_aug
         elif self.method == 'BYOL':
             loss = loss_one + loss_two  
         else: 
-            raise Exception("Methods must be either BYWL or BYOL.")
+            raise Exception("Methods must be either RLPL or BYOL.")
 
         return loss.mean()
     

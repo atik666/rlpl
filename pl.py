@@ -10,7 +10,7 @@ import os
 import argparse
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="TFMPL for pseudo labeling on the downstream tasks")
+    parser = argparse.ArgumentParser(description="RLPL for pseudo labeling on the downstream tasks")
     parser.add_argument('--data_path', type=str, default='/mnt/d/OneDrive - Oklahoma A and M System/RA/Fall 23/Codes/MPL/STL10/',
                         help="Path to the dataset")
     parser.add_argument('--resize', type=int, default=256, help="Resize dimensions for input images")
