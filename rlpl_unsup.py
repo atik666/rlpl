@@ -1,5 +1,5 @@
 import torch
-from bywl_main import BYWL
+from rlpl_main import RLPL
 import torchvision
 from torch.utils.data import DataLoader, ConcatDataset
 from torchvision import transforms
@@ -20,7 +20,7 @@ parser.add_argument('-p', '--path', type=str,
                     default='/mnt/d/OneDrive - Oklahoma A and M System/RA/Fall 23/Codes/MPL/STL10/', 
                     help='Path to the dataset')
 parser.add_argument('-sz', '--resize', type=int, default=256, help='Image size')
-parser.add_argument('-b', '--batchsz', type=int, default=128, help='Batch size')
+parser.add_argument('-b', '--batchsz', type=int, default=512, help='Batch size')
 parser.add_argument('-s', '--save', type=str, default='./model/', help='Path to save the models')
 parser.add_argument('-sp', '--save_path', type=str, default='./model/rlpl_unsup.pt', help='file name')
 parser.add_argument('-e', '--epochs', type=int, default=50, help='Number of  epochs')
