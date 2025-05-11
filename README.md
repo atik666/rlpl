@@ -80,6 +80,7 @@ Key arguments:
 
 The dataset should be organized as follows:
 
+```
 dataset_folder/
 ├── train/  # Labeled training data
 │   ├── class1/
@@ -91,6 +92,7 @@ dataset_folder/
 │   └── ...
 └── unsup/  # Unlabeled data
     └── dummy_class/  # Single folder containing all unlabeled images
+```
 
 ## Model Performance
 
